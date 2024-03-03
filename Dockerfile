@@ -1,5 +1,5 @@
 # Use the official OpenJDK base image with Java 8
-FROM openjdk:8-jdk
+FROM openjdk:17-jdk
 #FROM adoptopenjdk/openjdk8:alpine
 bind-address = 192.168.123.456
 
