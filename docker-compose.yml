@@ -1,0 +1,35 @@
+version: '3'
+services:
+  mysqlservice:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=demo
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Root@123
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - bootnetwork
+
+  appservice:
+    build: ./bootserver
+    depends_on:
+      - mysqlservice
+    environment:
+      - spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+      - spring.datasource.url=jdbc:mysql://mysqlservice:3306/demo
+      - spring.datasource.username=root
+      - spring.datasource.password=Root@123
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.jpa.show-sql=true
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+    ports:
+      - 8085:8080
+    networks:
+      - bootnetwork
+
+networks:
+  bootnetwork:
